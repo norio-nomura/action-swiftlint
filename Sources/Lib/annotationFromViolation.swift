@@ -5,8 +5,8 @@ public func annotation(from violation: SwiftLint.Violation) -> GitHub.Repository
         start_line: violation.line,
         start_column: violation.character,
         annotation_level: annotationLevel(from: violation.severity),
-        message: violation.reason,
-        title: violation.type,
+        message: "\(violation.reason) (\(violation.rule_id))",
+        title: "SwiftLint: \(violation.type) Violation",
         raw_details: nil)
 }
 
