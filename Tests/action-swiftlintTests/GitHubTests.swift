@@ -7,7 +7,7 @@ typealias Annotation = GitHub.Repository.CheckRun.Annotation
 
 class GitHubTests: XCTestCase {
     let annotation = Annotation(path: relativePathOfFile, start_line: #line, start_column: #column,
-                                annotation_level: .failure, message: "testEncodeAnnotation")
+                                annotation_level: .notice, message: "testEncodeAnnotation")
 
     func testEncodeAnnotation() {
         let encoder = JSONEncoder()
