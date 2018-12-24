@@ -123,10 +123,10 @@ extension GitHub.Repository {
             return false
         }
         let batchSize = 50
-        var rest = annotations
+        var rest = ArraySlice(annotations)
         while !rest.isEmpty {
             let annotations = Array(rest.prefix(batchSize))
-            rest.removeFirst(batchSize)
+            rest = rest.dropFirst(batchSize)
             let output = Request.Output(title: output.title, summary: output.summary, annotations: annotations)
             let response: CheckRun? = request(checkRun.url, method: "PATCH", with: Request(output: output))
             if response == nil {
