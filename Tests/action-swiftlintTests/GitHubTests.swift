@@ -2,11 +2,12 @@ import Foundation
 import Lib
 import XCTest
 
+let relativePathOfFile = #file.replacingOccurrences(of: projectRootPath, with: "")
+typealias Annotation = GitHub.Repository.CheckRun.Annotation
+
 class GitHubTests: XCTestCase {
-    let annotation = GitHub.Repository.CheckRun.Annotation(path: "Tests/action-swiftlintTests/SwiftLintTests.swift",
-                                                           start_line: 19,
-                                                           annotation_level: .failure,
-                                                           message: "testEncodeAnnotation")
+    let annotation = Annotation(path: relativePathOfFile, start_line: #line, start_column: #column,
+                                annotation_level: .failure, message: "testEncodeAnnotation")
 
     func testEncodeAnnotation() {
         let encoder = JSONEncoder()
@@ -14,20 +15,21 @@ class GitHubTests: XCTestCase {
         if #available(macOS 10.13, *) {
             outputFormatting = [outputFormatting, .sortedKeys]
         }
-        #if canImport(Glibc)
+    #if canImport(Glibc)
         outputFormatting = [outputFormatting, .sortedKeys]
-        #endif
+    #endif
         encoder.outputFormatting = outputFormatting
         do {
             let data = try encoder.encode(annotation)
             let jsonString = String(data: data, encoding: .utf8)
             XCTAssertEqual(jsonString, """
                 {
-                  "annotation_level" : "failure",
-                  "end_line" : 19,
-                  "message" : "testEncodeAnnotation",
+                  "annotation_level" : "\(annotation.annotation_level)",
+                  "end_line" : \(annotation.end_line),
+                  "message" : "\(annotation.message)",
                   "path" : "\(annotation.path.replacingOccurrences(of: "/", with: "\\/"))",
-                  "start_line" : 19
+                  "start_column" : \(annotation.start_column ?? 0),
+                  "start_line" : \(annotation.start_line)
                 }
                 """)
         } catch {

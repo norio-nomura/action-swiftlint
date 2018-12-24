@@ -1,6 +1,7 @@
 import Foundation
 
 let projectRootURL = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+let projectRootPath = projectRootURL.appendingPathComponent("/").path
 
 extension String {
     func withStaticString(_ closure: (StaticString) -> Void) {
