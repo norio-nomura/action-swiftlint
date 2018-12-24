@@ -25,6 +25,7 @@ class GitHubTests: XCTestCase {
             XCTAssertEqual(jsonString, """
                 {
                   "annotation_level" : "\(annotation.annotation_level)",
+                  "end_column" : \(annotation.end_column ?? 0),
                   "end_line" : \(annotation.end_line),
                   "message" : "\(annotation.message)",
                   "path" : "\(annotation.path.replacingOccurrences(of: "/", with: "\\/"))",

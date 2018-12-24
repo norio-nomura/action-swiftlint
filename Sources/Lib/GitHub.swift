@@ -67,7 +67,7 @@ extension GitHub.Repository.CheckRun {
             self.start_line = start_line
             self.end_line = end_line ?? start_line
             self.start_column = self.start_line == self.end_line ? start_column : nil
-            self.end_column = self.start_line == self.end_line ? end_column : nil
+            self.end_column = self.start_line == self.end_line ? end_column ?? start_column : nil
             self.annotation_level = annotation_level
             self.message = message
             self.title = title
