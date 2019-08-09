@@ -1,4 +1,4 @@
-FROM norionomura/swiftlint:swift-4.2
+FROM norionomura/swiftlint
 LABEL version="0.1.0"
 LABEL repository="https://github.com/norio-nomura/action-swiftlint"
 LABEL homepage="https://github.com/norio-nomura/action-swiftlint"

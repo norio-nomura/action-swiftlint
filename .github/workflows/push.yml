@@ -11,7 +11,7 @@ jobs:
       with:
         args: Dockerfile
     - name: swift test
-      uses: docker://norionomura/swiftlint:swift-4.2
+      uses: docker://norionomura/swiftlint
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
