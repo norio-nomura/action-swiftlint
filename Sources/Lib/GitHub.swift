@@ -29,6 +29,7 @@ extension GitHub.Repository {
         public var url: URL
         public var output: Output?
         public var app: App
+        public var check_suite: CheckSuite
     }
 }
 
@@ -79,6 +80,10 @@ extension GitHub.Repository.CheckRun {
         public var id: Int
         public var name: String
     }
+
+    public struct CheckSuite: Decodable {
+        public var id: Int
+    }
 }
 
 extension GitHub.Repository {
@@ -103,8 +108,10 @@ extension GitHub.Repository {
             var check_runs: [CheckRun]
         }
 
-        let response: Response? = request(url(with: "/repos/\(repo)/commits/\(ref)/check-runs"))
-        return response?.check_runs ?? []
+        let response1: Response? = request(url(with: "/repos/\(repo)/commits/\(ref)/check-runs"))
+        guard let suite_id = response1?.check_runs.first?.check_suite.id else { return [] }
+        let response2: Response? = request(url(with: "/repos/\(repo)/check-suites/\(suite_id)/check-runs"))
+        return response2?.check_runs ?? []
     }
 
     @discardableResult
