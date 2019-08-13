@@ -180,6 +180,9 @@ extension GitHub.Repository {
             }
             guard (200...299).contains(httpURLResponse.statusCode) else {
                 print("server error status: \(httpURLResponse.statusCode)")
+                if let data = data, let output = String(data: data, encoding: .utf8) {
+                    print(output)
+                }
                 return
             }
             guard let data = data else {
