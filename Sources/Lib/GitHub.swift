@@ -117,23 +117,24 @@ extension GitHub.Repository {
     public func update(_ checkRun: CheckRun, with annotations: [CheckRun.Annotation]) -> Bool {
         struct Request: Encodable {
             struct Output: Encodable {
-                var title: String?
-                var summary: String?
+                var title: String
+                var summary: String
                 var annotations: [CheckRun.Annotation]
             }
             var output: Output
         }
 
-        guard let output = checkRun.output else {
-            print("\(checkRun) has no output.")
-            return false
-        }
+        let title = "SwiftLint Violations"
+        let warnings = annotations.filter { $0.annotation_level == .warning }.count
+        let failure = annotations.filter { $0.annotation_level == .failure }.count
+        let summary = "warnings: \(warnings), failures: \(failure)"
+
         let batchSize = 50
         var rest = ArraySlice(annotations)
         while !rest.isEmpty {
             let annotations = Array(rest.prefix(batchSize))
             rest = rest.dropFirst(batchSize)
-            let output = Request.Output(title: output.title, summary: output.summary, annotations: annotations)
+            let output = Request.Output(title: title, summary: summary, annotations: annotations)
             let response: CheckRun? = request(checkRun.url, method: "PATCH", with: Request(output: output))
             if response == nil {
                 return false
