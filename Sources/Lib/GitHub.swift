@@ -89,17 +89,16 @@ extension GitHub.Repository.CheckRun {
 extension GitHub.Repository {
     public func currentCheckRun() -> CheckRun? {
         guard let sha = environment("GITHUB_SHA") else { return nil }
-        guard let name = environment("GITHUB_ACTION") else { return nil }
-        guard let checkRun = findCheckRun(for: sha, with: name) else {
-            print("Current Action `\(name)` not found!")
+        guard let checkRun = findCheckRun(for: sha) else {
+            print("Current Action not found!")
             return nil
         }
         return checkRun
     }
 
-    public func findCheckRun(for ref: String, with name: String) -> CheckRun? {
+    public func findCheckRun(for ref: String) -> CheckRun? {
         return checkRuns(for: ref).first { checkRun -> Bool in
-            checkRun.name == name && checkRun.app.name == "GitHub Actions"
+            checkRun.app.name == "GitHub Actions"
         }
     }
 
