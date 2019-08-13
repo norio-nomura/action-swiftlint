@@ -1,5 +1,5 @@
-on: push
-name: New workflow
+name: CI
+on: [push, pull_requests]
 jobs:
   dockerLint:
     name: Docker Lint
