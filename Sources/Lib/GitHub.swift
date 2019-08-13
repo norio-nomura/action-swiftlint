@@ -35,8 +35,8 @@ extension GitHub.Repository {
 
 extension GitHub.Repository.CheckRun {
     public struct Output: Decodable {
-        public var title: String
-        public var summary: String
+        public var title: String?
+        public var summary: String?
         public var text: String?
         public var annotations: [Annotation]?
     }
@@ -118,8 +118,8 @@ extension GitHub.Repository {
     public func update(_ checkRun: CheckRun, with annotations: [CheckRun.Annotation]) -> Bool {
         struct Request: Encodable {
             struct Output: Encodable {
-                var title: String
-                var summary: String
+                var title: String?
+                var summary: String?
                 var annotations: [CheckRun.Annotation]
             }
             var output: Output
