@@ -88,9 +88,9 @@ extension GitHub.Repository.CheckRun {
 
 extension GitHub.Repository {
     public func currentCheckRun() -> CheckRun? {
-        guard let sha = environment("GITHUB_SHA") else { return nil }
-        guard let checkRun = findCheckRun(for: sha) else {
-            print("Current Action not found! GITHUB_SHA: \(sha)")
+        guard let ref = environment("GITHUB_REF") else { return nil }
+        guard let checkRun = findCheckRun(for: ref) else {
+            print("Current Action not found! GITHUB_REF: \(ref)")
             return nil
         }
         return checkRun
