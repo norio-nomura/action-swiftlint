@@ -29,13 +29,14 @@ extension GitHub.Repository {
         public var url: URL
         public var output: Output?
         public var app: App
+        public var check_suite: CheckSuite
     }
 }
 
 extension GitHub.Repository.CheckRun {
     public struct Output: Decodable {
-        public var title: String
-        public var summary: String
+        public var title: String?
+        public var summary: String?
         public var text: String?
         public var annotations: [Annotation]?
     }
@@ -79,22 +80,25 @@ extension GitHub.Repository.CheckRun {
         public var id: Int
         public var name: String
     }
+
+    public struct CheckSuite: Decodable {
+        public var id: Int
+    }
 }
 
 extension GitHub.Repository {
     public func currentCheckRun() -> CheckRun? {
         guard let sha = environment("GITHUB_SHA") else { return nil }
-        guard let name = environment("GITHUB_ACTION") else { return nil }
-        guard let checkRun = findCheckRun(for: sha, with: name) else {
-            print("Current Action `\(name)` not found!")
+        guard let checkRun = findCheckRun(for: sha) else {
+            print("Current Action not found!")
             return nil
         }
         return checkRun
     }
 
-    public func findCheckRun(for ref: String, with name: String) -> CheckRun? {
+    public func findCheckRun(for ref: String) -> CheckRun? {
         return checkRuns(for: ref).first { checkRun -> Bool in
-            checkRun.name == name && checkRun.app.name == "GitHub Actions"
+            checkRun.app.name == "GitHub Actions"
         }
     }
 
@@ -103,8 +107,10 @@ extension GitHub.Repository {
             var check_runs: [CheckRun]
         }
 
-        let response: Response? = request(url(with: "/repos/\(repo)/commits/\(ref)/check-runs"))
-        return response?.check_runs ?? []
+        let response1: Response? = request(url(with: "/repos/\(repo)/commits/\(ref)/check-runs"))
+        guard let suite_id = response1?.check_runs.first?.check_suite.id else { return [] }
+        let response2: Response? = request(url(with: "/repos/\(repo)/check-suites/\(suite_id)/check-runs"))
+        return response2?.check_runs ?? []
     }
 
     @discardableResult
@@ -118,16 +124,17 @@ extension GitHub.Repository {
             var output: Output
         }
 
-        guard let output = checkRun.output else {
-            print("\(checkRun) has no output.")
-            return false
-        }
+        let title = "SwiftLint Violations"
+        let warnings = annotations.filter { $0.annotation_level == .warning }.count
+        let failure = annotations.filter { $0.annotation_level == .failure }.count
+        let summary = "warnings: \(warnings), failures: \(failure)"
+
         let batchSize = 50
         var rest = ArraySlice(annotations)
         while !rest.isEmpty {
             let annotations = Array(rest.prefix(batchSize))
             rest = rest.dropFirst(batchSize)
-            let output = Request.Output(title: output.title, summary: output.summary, annotations: annotations)
+            let output = Request.Output(title: title, summary: summary, annotations: annotations)
             let response: CheckRun? = request(checkRun.url, method: "PATCH", with: Request(output: output))
             if response == nil {
                 return false
@@ -174,6 +181,9 @@ extension GitHub.Repository {
             }
             guard (200...299).contains(httpURLResponse.statusCode) else {
                 print("server error status: \(httpURLResponse.statusCode)")
+                if let data = data, let output = String(data: data, encoding: .utf8) {
+                    print(output)
+                }
                 return
             }
             guard let data = data else {
