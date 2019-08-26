@@ -90,7 +90,7 @@ extension GitHub.Repository {
     public func currentCheckRun() -> CheckRun? {
         guard let sha = environment("GITHUB_SHA") else { return nil }
         guard let checkRun = findCheckRun(for: sha) else {
-            print("Current Action not found! GITHUB_SHA: \(sha)")
+            print("Current Action not found!")
             return nil
         }
         return checkRun
