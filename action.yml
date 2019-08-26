@@ -4,3 +4,6 @@ author: 'Norio Nomura <norio.nomura@gmail.com>'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+branding:
+  icon: 'shield'
+  color: 'orange'
