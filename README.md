@@ -6,16 +6,22 @@ This Action executes [SwiftLint](https://github.com/realm/SwiftLint) and generat
 
 An example workflow to executing SwiftLint follows:
 
-```hcl
-workflow "Execute SwiftLint" {
-  on = "push"
-  resolves = ["swiftlint"]
-}
+```yaml
+name: CI
 
-action "swiftlint" {
-  uses = "norio-nomura/action-swiftlint@master"
-  secrets = ["GITHUB_TOKEN"]
-}
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: GitHub Action for SwiftLint
+      uses: norio-nomura/action-swiftlint@2.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Secrets
