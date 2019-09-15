@@ -88,7 +88,7 @@ extension GitHub.Repository.CheckRun {
 
 extension GitHub.Repository {
     public func currentCheckRun() -> CheckRun? {
-        guard let sha = environment("GITHUB_SHA") else { return nil }
+        guard let sha = environment("ACTION_SWIFTLINT_SHA", "GITHUB_SHA") else { return nil }
         guard let checkRun = findCheckRun(for: sha) else {
             print("Current Action not found!")
             return nil
@@ -204,10 +204,12 @@ extension GitHub.Repository {
     }
 }
 
-private func environment(_ key: String) -> String? {
-    guard let value = ProcessInfo.processInfo.environment[key] else {
-        print("Can not find `\(key)` environment variable.")
-        return nil
+private func environment(_ keys: String...) -> String? {
+    for key in keys {
+        if let value = ProcessInfo.processInfo.environment[key] {
+            return value
+        }
     }
-    return value
+    print("Can not find `\(keys)` environment variable.")
+    return nil
 }
