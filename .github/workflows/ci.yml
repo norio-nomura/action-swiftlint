@@ -12,20 +12,10 @@ jobs:
       uses: docker://replicated/dockerfilelint
       with:
         args: Dockerfile
-    - name: swift test on push
-      if: github.event_name == 'push'
+    - name: swift test
       uses: docker://norionomura/swiftlint:swift-5
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        entrypoint: swift
-        args: test
-    - name: swift test on pull_request
-      if: github.event_name == 'pull_request' && contains('opened synchronize reopened', github.event.action)
-      uses: docker://norionomura/swiftlint:swift-5
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
       with:
         entrypoint: swift
         args: test
