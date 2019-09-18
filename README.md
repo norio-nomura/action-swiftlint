@@ -9,7 +9,7 @@ An example workflow to executing SwiftLint follows:
 ```yaml
 name: CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
