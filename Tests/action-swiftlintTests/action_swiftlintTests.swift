@@ -13,10 +13,10 @@ final class action_swiftlintTests: XCTestCase {
 
         XCTAssertEqual(output, """
 Sources/Lib/GitHub.swift:45:16: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:106:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:118:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:119:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:119:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:140:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:152:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:153:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:153:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
 Sources/Lib/SwiftLint.swift:6:16: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
 Sources/Lib/execute().swift:4:68: warning: Large Tuple Violation: Tuples should have at most 2 members. (large_tuple)
 \(warningMessage)

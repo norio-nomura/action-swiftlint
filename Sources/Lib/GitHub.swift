@@ -86,28 +86,62 @@ extension GitHub.Repository.CheckRun {
     }
 }
 
+extension GitHub {
+    public enum EventPayload {}
+}
+
+extension GitHub.EventPayload {
+    public struct PullRequestEvent: Decodable {
+        public var pull_request: PullRequest
+    }
+
+    public struct PullRequest: Decodable {
+        public var head: Head
+    }
+
+    public struct Head: Decodable {
+        public var sha: String
+    }
+}
+
 extension GitHub.Repository {
     public func currentCheckRun() -> CheckRun? {
-        guard let sha = environment("GITHUB_SHA") else { return nil }
-        guard let checkRun = findCheckRun(for: sha) else {
+        switch environment("GITHUB_EVENT_NAME") {
+        case "push":
+            return environment("GITHUB_SHA").flatMap(findCheckRun)
+        case "pull_request":
+            return (pullRequestEventPayload()?.pull_request.head.sha).flatMap(findCheckRun)
+        default:
+            return nil
+        }
+    }
+
+    public func pullRequestEventPayload() -> GitHub.EventPayload.PullRequestEvent? {
+        return environment("GITHUB_EVENT_PATH").flatMap {
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: $0))
+                return try JSONDecoder().decode(GitHub.EventPayload.PullRequestEvent.self, from: data)
+            } catch {
+                print("\(error)")
+                return nil
+            }
+        }
+    }
+
+    public func findCheckRun(for ref: String) -> CheckRun? {
+        guard let checkRun = checkRuns(for: ref).first(where: { $0.app.name == "GitHub Actions" }) else {
             print("Current Action not found!")
             return nil
         }
         return checkRun
     }
 
-    public func findCheckRun(for ref: String) -> CheckRun? {
-        return checkRuns(for: ref).first { checkRun -> Bool in
-            checkRun.app.name == "GitHub Actions"
-        }
-    }
-
-    public func checkRuns(for ref: String) -> [CheckRun] {
+    public func checkRuns(for sha: String) -> [CheckRun] {
         struct Response: Decodable {
             var check_runs: [CheckRun]
         }
 
-        let response1: Response? = request(url(with: "/repos/\(repo)/commits/\(ref)/check-runs"))
+        let response1: Response? = request(url(with: "/repos/\(repo)/commits/\(sha)/check-runs"))
         guard let suite_id = response1?.check_runs.first?.check_suite.id else { return [] }
         let response2: Response? = request(url(with: "/repos/\(repo)/check-suites/\(suite_id)/check-runs"))
         return response2?.check_runs ?? []

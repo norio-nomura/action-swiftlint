@@ -1,10 +1,12 @@
 name: CI
-on: [push]
+on: [push, pull_request]
 jobs:
   dockerLint:
     name: Docker Lint
     runs-on: ubuntu-latest
     steps:
+    - name: Dump Event Payload
+      run: cat ${GITHUB_EVENT_PATH}
     - uses: actions/checkout@master
     - name: Docker Lint
       uses: docker://replicated/dockerfilelint
