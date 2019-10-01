@@ -1,0 +1,27 @@
+name: SwiftPM
+
+on:
+  push:
+    branches: [master]
+    paths: 
+      - '.github/workflows/swiftpm.yml'
+      - 'Package*'
+      - 'Sources/**'
+      - 'Tests/**'
+  pull_request:
+    paths: 
+      - '.github/workflows/swiftpm.yml'
+      - 'Package*'
+      - 'Sources/**'
+      - 'Tests/**'
+
+jobs:
+  Linux:
+    runs-on: ubuntu-latest
+    container:
+      image: norionomura/swiftlint:swift-5
+    steps:
+      - uses: actions/checkout@v1
+      - run: swift test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
