@@ -1,0 +1,29 @@
+name: Docker Build
+
+on:
+  push:
+    branches: [master]
+    paths: 
+      - '.dockerignore'
+      - '.github/workflows/docker-build.yml'
+      - 'Dockerfile'
+      - 'Package*'
+      - 'Sources/**'
+      - 'Tests/**'
+  pull_request:
+    paths: 
+      - '.dockerignore'
+      - '.github/workflows/docker-build.yml'
+      - 'Dockerfile'
+      - 'Package*'
+      - 'Sources/**'
+      - 'Tests/**'
+
+jobs:
+  DockerBuild:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Docker Build
+        run: docker build -t action-swiftlint .

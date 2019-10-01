@@ -1,0 +1,25 @@
+name: Docker Lint
+
+on:
+  push:
+    branches: [master]
+    paths: 
+      - '.dockerignore'
+      - '.github/workflows/docker-lint.yml'
+      - 'Dockerfile'
+  pull_request:
+    paths: 
+      - '.dockerignore'
+      - '.github/workflows/docker-lint.yml'
+      - 'Dockerfile'
+
+jobs:
+  DockerLint:
+    name: Docker Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Docker Lint
+        uses: docker://replicated/dockerfilelint
+        with:
+          args: Dockerfile
