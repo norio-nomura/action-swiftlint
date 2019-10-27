@@ -12,11 +12,11 @@ final class action_swiftlintTests: XCTestCase {
             "Can not find `GITHUB_TOKEN` environment variable.\n" : ""
 
         XCTAssertEqual(output, """
-Sources/Lib/GitHub.swift:45:16: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:140:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:152:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:153:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
-Sources/Lib/GitHub.swift:153:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:48:16: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:143:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:155:9: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:156:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
+Sources/Lib/GitHub.swift:156:13: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
 Sources/Lib/SwiftLint.swift:6:16: warning: Nesting Violation: Types should be nested at most 1 level deep (nesting)
 Sources/Lib/execute().swift:4:68: warning: Large Tuple Violation: Tuples should have at most 2 members. (large_tuple)
 \(warningMessage)
