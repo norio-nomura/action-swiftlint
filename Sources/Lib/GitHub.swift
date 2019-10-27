@@ -1,6 +1,8 @@
 import Dispatch
 import Foundation
+#if canImport(FoundationNetworking)
 import FoundationNetworking
+#endif
 
 public enum GitHub {
     public static let baseURL = URL(string: "https://api.github.com")!
