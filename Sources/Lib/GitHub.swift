@@ -1,5 +1,6 @@
 import Dispatch
 import Foundation
+import FoundationNetworking
 
 public enum GitHub {
     public static let baseURL = URL(string: "https://api.github.com")!
