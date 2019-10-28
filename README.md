@@ -4,12 +4,16 @@ This Action executes [SwiftLint](https://github.com/realm/SwiftLint) and generat
 
 ## Usage
 
-An example workflow to executing SwiftLint follows:
+An example workflow(`.github/workflows/swiftlint.yml`) to executing SwiftLint follows:
 
 ```yaml
 name: CI
 
-on: [push, pull_request]
+  pull_request:
+    paths:
+      - '.github/workflows/swiftlint.yml'
+      - '.swiftlint.yml'
+      - '**/*.swift'
 
 jobs:
   build:
