@@ -7,11 +7,13 @@ on:
       - '.dockerignore'
       - '.github/workflows/docker-build.yml'
       - 'Dockerfile'
+      - 'entrypoint.sh'
   pull_request:
     paths: 
       - '.dockerignore'
       - '.github/workflows/docker-build.yml'
       - 'Dockerfile'
+      - 'entrypoint.sh'
 
 jobs:
   DockerBuild:

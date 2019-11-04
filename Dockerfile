@@ -9,4 +9,5 @@ LABEL "com.github.actions.description"="A tool to enforce Swift style and conven
 LABEL "com.github.actions.icon"="shield"
 LABEL "com.github.actions.color"="orange"
 
-
+COPY entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
