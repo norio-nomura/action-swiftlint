@@ -29,6 +29,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+**Limitation: This action does not work with Pull Reuqest from forked repository, because `GITHUB_TOKEN` used on that condition does not have write access to checks APIs.**
+
 ## Secrets
 
 - Specifying `GITHUB_TOKEN` to `secrets` is required to using [Check Run APIs](https://developer.github.com/v3/checks/runs/) for generating annotations from SwiftLint Violations.
