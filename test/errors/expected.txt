@@ -1,0 +1,7 @@
+::error file=Sources/errors/errors.swift,line=1,column=8::Type Name Violation: Type name should start with an uppercase character: 'errors' (type_name)
+::error file=Tests/errorsTests/errorsTests.swift,line=4,column=13::Type Name Violation: Type name should start with an uppercase character: 'errorsTests' (type_name)
+::warning file=Package.swift,line=12,column=33::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
+::warning file=Package.swift,line=20,column=1::Line Length Violation: Line should be 120 characters or less: currently 122 characters (line_length)
+::warning file=Package.swift,line=26,column=38::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
+::warning file=Tests/errorsTests/XCTestManifests.swift,line=6,column=39::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
+::warning file=Tests/errorsTests/errorsTests.swift,line=13,column=37::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
