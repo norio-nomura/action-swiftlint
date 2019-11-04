@@ -7,17 +7,11 @@ on:
       - '.dockerignore'
       - '.github/workflows/docker-build.yml'
       - 'Dockerfile'
-      - 'Package*'
-      - 'Sources/**'
-      - 'Tests/**'
   pull_request:
     paths: 
       - '.dockerignore'
       - '.github/workflows/docker-build.yml'
       - 'Dockerfile'
-      - 'Package*'
-      - 'Sources/**'
-      - 'Tests/**'
 
 jobs:
   DockerBuild:
