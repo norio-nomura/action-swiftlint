@@ -7,8 +7,9 @@ This Action executes [SwiftLint](https://github.com/realm/SwiftLint) and generat
 An example workflow(`.github/workflows/swiftlint.yml`) to executing SwiftLint follows:
 
 ```yaml
-name: CI
+name: SwiftLint
 
+on:
   pull_request:
     paths:
       - '.github/workflows/swiftlint.yml'
@@ -16,16 +17,16 @@ name: CI
       - '**/*.swift'
 
 jobs:
-  build:
-
+  SwiftLint:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v1
-    - name: GitHub Action for SwiftLint
-      uses: norio-nomura/action-swiftlint@2.2.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v1
+      - name: GitHub Action for SwiftLint
+        # Avoid failing with "server error status: 403" on PR from forked repository
+        if: github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
+        uses: norio-nomura/action-swiftlint@2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Secrets
