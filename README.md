@@ -1,6 +1,6 @@
 # GitHub Action for SwiftLint
 
-This Action executes [SwiftLint](https://github.com/realm/SwiftLint) and generates annotations from SwiftLint Violations by using [GitHub Checks API](https://blog.github.com/2018-05-07-introducing-checks-api/).
+This Action executes [SwiftLint](https://github.com/realm/SwiftLint) and generates annotations from SwiftLint Violations.
 
 ## Usage
 
@@ -22,21 +22,16 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: GitHub Action for SwiftLint
-        # Avoid failing with "server error status: 403" on PR from forked repository
-        if: github.event.pull_request.base.repo.id == github.event.pull_request.head.repo.id
-        uses: norio-nomura/action-swiftlint@2.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: norio-nomura/action-swiftlint@3.0.0
 ```
-
-**Limitation: This action does not work with Pull Reuqest from forked repository, because `GITHUB_TOKEN` used on that condition does not have write access to checks APIs.**
 
 ## Secrets
 
-- Specifying `GITHUB_TOKEN` to `secrets` is required to using [Check Run APIs](https://developer.github.com/v3/checks/runs/) for generating annotations from SwiftLint Violations.
+- ~~Specifying `GITHUB_TOKEN` to `secrets` is required to using [Check Run APIs](https://developer.github.com/v3/checks/runs/) for generating annotations from SwiftLint Violations.~~
+- Since 3.0.0, `GITHUB_TOKEN` is no longer needed.
 
 ## Example
-[Here](https://github.com/norio-nomura/test-action-swiftlint/pull/1/files#annotation_9749095) is an example that actually works.
+[Here](https://github.com/norio-nomura/test-action-swiftlint/pull/1/files) is an example that actually works.
 ![screenshot](screenshot.png)
 
 ## Author
