@@ -1,0 +1,5 @@
+::warning file=Package.swift,line=12,column=35::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
+::warning file=Package.swift,line=20,column=1::Line Length Violation: Line should be 120 characters or less: currently 122 characters (line_length)
+::warning file=Package.swift,line=26,column=40::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
+::warning file=Tests/WarningsTests/WarningsTests.swift,line=13,column=37::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
+::warning file=Tests/WarningsTests/XCTestManifests.swift,line=6,column=41::Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
