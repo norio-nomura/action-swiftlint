@@ -11,4 +11,4 @@ function convertToGitHubActionsLoggingCommands() {
     sed -E 's/^(.*):([0-9]+):([0-9]+): (warning|error|[^:]+): (.*)/::\4 file=\1,line=\2,col=\3::\5/'
 }
 
-set -o pipefail && swiftlint "$@" | stripPWD | convertToGitHubActionsLoggingCommands
+set -o pipefail && swiftlint lint "$@" --config .github/.swiftlint.yml | stripPWD | convertToGitHubActionsLoggingCommands
