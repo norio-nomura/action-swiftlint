@@ -23,6 +23,10 @@ jobs:
       - uses: actions/checkout@v1
       - name: GitHub Action for SwiftLint
         uses: norio-nomura/action-swiftlint@3.0.1
+      - name: GitHub Action for SwiftLint with --strict
+        uses: norio-nomura/action-swiftlint@3.0.1
+        with:
+          args: --strict
 ```
 
 ## Secrets
