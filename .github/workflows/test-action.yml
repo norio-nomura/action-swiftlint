@@ -1,0 +1,47 @@
+name: Test Action
+
+on:
+  push:
+    branches: [master]
+    paths: 
+      - '.dockerignore'
+      - '.github/workflows/test-action.yml'
+      - 'Dockerfile'
+      - 'entrypoint.sh'
+  pull_request:
+    paths: 
+      - '.dockerignore'
+      - '.github/workflows/test-action.yml'
+      - 'Dockerfile'
+      - 'entrypoint.sh'
+
+jobs:
+  TestAction:
+    name: Test Action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Exit Status on Errors
+        uses: ./.github/actions/swiftlint
+        with:
+          args: --path ./test/errors
+        continue-on-error: true
+
+      - name: Exit Status on No lintable files
+        uses: ./.github/actions/swiftlint
+        with:
+          args: --path ./test/no-lintable-files
+        continue-on-error: true
+
+      - name: Exit Status on Warnings
+        uses: ./.github/actions/swiftlint
+        with:
+          args: --path ./test/Warnings
+        continue-on-error: true
+
+      - name: Exit Status on Warnings with `--strict`
+        uses: ./.github/actions/swiftlint
+        with:
+          args: --path ./test/Warnings --strict
+        continue-on-error: true
