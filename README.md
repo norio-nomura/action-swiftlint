@@ -27,6 +27,10 @@ jobs:
         uses: norio-nomura/action-swiftlint@3.0.1
         with:
           args: --strict
+      - name: GitHub Action for SwiftLint (Only files changed in the PR)
+        uses: norio-nomura/action-swiftlint@3.0.1
+        env:
+          DIFF_BASE: ${{ github.base_ref }}
 ```
 
 ## Secrets

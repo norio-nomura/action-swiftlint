@@ -11,4 +11,10 @@ function convertToGitHubActionsLoggingCommands() {
     sed -E 's/^(.*):([0-9]+):([0-9]+): (warning|error|[^:]+): (.*)/::\4 file=\1,line=\2,col=\3::\5/'
 }
 
-set -o pipefail && swiftlint "$@" | stripPWD | convertToGitHubActionsLoggingCommands
+if ! ${DIFF_BASE+false};
+then
+	changedFiles="-- "
+	changedFiles+=$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD $DIFF_BASE) -- '*.swift')
+fi
+
+set -o pipefail && swiftlint "$@" $changedFiles | stripPWD | convertToGitHubActionsLoggingCommands
