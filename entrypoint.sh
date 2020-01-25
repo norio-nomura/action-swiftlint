@@ -13,8 +13,13 @@ function convertToGitHubActionsLoggingCommands() {
 
 if ! ${DIFF_BASE+false};
 then
-	changedFiles="-- "
-	changedFiles+=$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD $DIFF_BASE) -- '*.swift')
+	changedFiles=$(git --no-pager diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD $DIFF_BASE) -- '*.swift')
+
+	if [ -z "$changedFiles" ]
+	then
+		echo "No Swift file changed"
+		exit
+	fi
 fi
 
-set -o pipefail && swiftlint "$@" $changedFiles | stripPWD | convertToGitHubActionsLoggingCommands
+set -o pipefail && swiftlint "$@" -- $changedFiles | stripPWD | convertToGitHubActionsLoggingCommands
