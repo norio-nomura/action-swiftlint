@@ -1,5 +1,5 @@
 FROM norionomura/swiftlint:swift-5.1
-LABEL version="3.0.1"
+LABEL version="3.1.0"
 LABEL repository="https://github.com/norio-nomura/action-swiftlint"
 LABEL homepage="https://github.com/norio-nomura/action-swiftlint"
 LABEL maintainer="Norio Nomura <norio.nomura@gmail.com>"
