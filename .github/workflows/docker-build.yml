@@ -61,3 +61,8 @@ jobs:
         run: diff <(docker run -v $(pwd):$(pwd) -w $(pwd) --rm action-swiftlint|sort) expected.txt
         working-directory: ./test/Warnings
         shell: bash
+
+      - name: Output on Warnings with WORKING_DIRECTORY environment variable
+        run: diff <(docker run -v $(pwd):$(pwd) -w $(pwd) --rm --env WORKING_DIRECTORY=Warnings action-swiftlint|sort) Warnings/expected.txt
+        working-directory: ./test
+        shell: bash
