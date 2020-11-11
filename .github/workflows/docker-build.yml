@@ -48,7 +48,7 @@ jobs:
       - name: Exit Status on Warnings with `--strict`
         run: |
           STATUS=$(docker run -v $(pwd):$(pwd) -w $(pwd) --rm action-swiftlint --strict &>/dev/null; echo $?)
-          [[ $STATUS == "3" ]]
+          [[ $STATUS == "2" ]]
         working-directory: ./test/Warnings
         shell: bash
 
