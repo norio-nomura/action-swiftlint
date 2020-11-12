@@ -31,6 +31,10 @@ jobs:
         uses: norio-nomura/action-swiftlint@3.1.0
         env:
           DIFF_BASE: ${{ github.base_ref }}
+      - name: GitHub Action for SwiftLint (Different working directory)
+        uses: norio-nomura/action-swiftlint@3.1.0
+        env:
+          WORKING_DIRECTORY: Source
 ```
 
 ## Secrets

@@ -48,7 +48,7 @@ jobs:
       - name: Exit Status on Warnings with `--strict`
         run: |
           STATUS=$(docker run -v $(pwd):$(pwd) -w $(pwd) --rm action-swiftlint --strict &>/dev/null; echo $?)
-          [[ $STATUS == "3" ]]
+          [[ $STATUS == "2" ]]
         working-directory: ./test/Warnings
         shell: bash
 
@@ -60,4 +60,9 @@ jobs:
       - name: Output on Warnings
         run: diff <(docker run -v $(pwd):$(pwd) -w $(pwd) --rm action-swiftlint|sort) expected.txt
         working-directory: ./test/Warnings
+        shell: bash
+
+      - name: Output on Warnings with WORKING_DIRECTORY environment variable
+        run: diff <(docker run -v $(pwd):$(pwd) -w $(pwd) --rm --env WORKING_DIRECTORY=Warnings action-swiftlint|sort) Warnings/expected.txt
+        working-directory: ./test
         shell: bash
