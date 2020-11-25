@@ -63,6 +63,6 @@ jobs:
         shell: bash
 
       - name: Output on Warnings with WORKING_DIRECTORY environment variable
-        run: diff <(docker run -v $(pwd):$(pwd) -w $(pwd) --rm --env WORKING_DIRECTORY=Warnings action-swiftlint|sort) Warnings/expected.txt
+        run: diff <(docker run -v $(pwd):$(pwd) -w $(pwd) --rm --env WORKING_DIRECTORY=Warnings action-swiftlint|sort) <(cat Warnings/expected.txt | sed -E 's/^(.*)file=(.*),(.*)/\1file=Warnings\/\2,\3/')
         working-directory: ./test
         shell: bash
