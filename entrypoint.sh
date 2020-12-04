@@ -21,7 +21,7 @@ then
 fi
 
 if [ -n "$DIFF_BASE" ] && [ -n "$DIFF_HEAD" ]; then
-	changedFiles=$(git --no-pager diff --name-only --relative $DIFF_HEAD $(git merge-base $DIFF_HEAD $DIFF_BASE) -- '*.swift')
+	changedFiles=$(git --no-pager diff --name-only --relative $DIFF_HEAD $DIFF_BASE -- '*.swift')
 
 	if [ -z "$changedFiles" ]
 	then
