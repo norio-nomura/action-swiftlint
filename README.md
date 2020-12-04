@@ -31,6 +31,7 @@ jobs:
         uses: norio-nomura/action-swiftlint@3.2.1
         env:
           DIFF_BASE: ${{ github.base_ref }}
+          DIFF_HEAD: ${{ github.head_ref }}
       - name: GitHub Action for SwiftLint (Different working directory)
         uses: norio-nomura/action-swiftlint@3.2.1
         env:
