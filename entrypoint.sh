@@ -28,7 +28,14 @@ if [ -n "$DIFF_BASE" ] && [ -n "$DIFF_HEAD" ]; then
 		echo "No Swift file changed"
 		exit
 	fi
-	
+elif [ -n "$DIFF_BASE" ]; then
+	changedFiles=$(git --no-pager diff --name-only --relative FETCH_HEAD $(git merge-base FETCH_HEAD $DIFF_BASE) -- '*.swift')
+
+	if [ -z "$changedFiles" ]
+	then
+		echo "No Swift file changed"
+		exit
+	fi
 fi
 
 set -o pipefail && swiftlint "$@" -- $changedFiles | stripPWD | convertToGitHubActionsLoggingCommands
