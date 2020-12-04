@@ -20,9 +20,8 @@ then
 	cd ${WORKING_DIRECTORY}
 fi
 
-if ! ${DIFF_BASE+false};
-then
-	changedFiles=$(git --no-pager diff --name-only --relative FETCH_HEAD $(git merge-base FETCH_HEAD $DIFF_BASE) -- '*.swift')
+if [[ -z $DIFF_BASE && -z $DIFF_HEAD ]]; then
+	changedFiles=$(git --no-pager diff --name-only --relative $DIFF_HEAD $(git merge-base $DIFF_HEAD $DIFF_BASE) -- '*.swift')
 
 	if [ -z "$changedFiles" ]
 	then
