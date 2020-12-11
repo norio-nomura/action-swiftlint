@@ -21,16 +21,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      // Simple usage
       - name: GitHub Action for SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
+      // With custom argument
       - name: GitHub Action for SwiftLint with --strict
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --strict
+      // Only checks files changed in the PR
+      - name: Fetch base ref
+        run: |
+          git fetch --prune --no-tags --depth=1 origin +refs/heads/${{ github.base_ref }}:refs/heads/${{ github.base_ref }}
       - name: GitHub Action for SwiftLint (Only files changed in the PR)
         uses: norio-nomura/action-swiftlint@3.2.1
         env:
           DIFF_BASE: ${{ github.base_ref }}
+          DIFF_HEAD: HEAD
+      // Runs on different workspace
       - name: GitHub Action for SwiftLint (Different working directory)
         uses: norio-nomura/action-swiftlint@3.2.1
         env:
