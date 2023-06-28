@@ -1,9 +1,36 @@
-name: 'GitHub Action for SwiftLint'
+name: 'SwiftLint'
 description: 'A tool to enforce Swift style and conventions'
-author: 'Norio Nomura <norio.nomura@gmail.com>'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
+author: 'Andreas Bauer <mail@andi-bauer.com>'
 branding:
-  icon: 'shield'
-  color: 'orange'
+  icon: 'terminal'
+  color: 'green'
+inputs:
+  version:
+    description: "A SwiftLint version to use."
+    required: true
+    default: 'latest'
+  args:
+    description: "Arguments to SwiftLint."
+    required: false
+  working-directory:
+    description: "The working directory relative to the base `checkout` directory"
+    required: true
+    default: ''
+runs:
+  using: "composite"
+  steps:
+    - name: Download SwiftLint ${{ inputs.version }}
+      shell: bash
+      run: |
+        wget https://github.com/realm/SwiftLint/releases/download/${{ inputs.version }}/portable_swiftlint.zip
+        unzip portable_swiftlint.zip
+        export SWIFTLINT_BINARY="$(pwd -L)/portable_swiftlint/swiftlint"
+      working-directory: ${{ github.action_path }}
+    - name: Print Environment
+      shell: bash
+      run: |
+        echo "Downloaded SwiftLint ${{ inputs.version }} to ${{ env.SWIFTLINT_BINARY }}"
+    - name: swiftlint
+      run: ${{ github.action_path }}/swiftlint.sh ${{ inputs.swiftlint-args }}
+      shell: bash
+      working-directory: '${{ github.workspace }}/${{ inputs.working-directory }}'

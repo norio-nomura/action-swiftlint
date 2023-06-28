@@ -1,0 +1,85 @@
+name: Tests Action
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  actions-tests:
+    name: Actions Tests
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-18.04", "ubuntu-20.04", "ubuntu-22.04", "macos-11", "macos-12", "macos-13"]
+        version: ["0.52.3", "latest"]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
+          working-directory: test/Warnings
+          version: ${{ matrix.version }}
+
+  swiftlint-tests:
+    name: SwiftLint Tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download SwiftLint ${{ inputs.version }}
+        shell: bash
+        run: |
+          wget https://github.com/realm/SwiftLint/releases/download/latest/portable_swiftlint.zip
+          unzip portable_swiftlint.zip
+          export SWIFTLINT_BINARY="$(pwd -L)/portable_swiftlint/swiftlint"
+        working-directory: ${{ github.action_path }}
+      - name: Print Environment
+        shell: bash
+        run: |
+          echo "Downloaded SwiftLint to ${{ env.SWIFTLINT_BINARY }}"
+
+      - name: Exit Status on Errors
+        shell: bash
+        run: |
+          STATUS=$(${{ github.workspace }}/swiftlint.sh &>/dev/null; echo $?)
+          echo $STATUS
+          [[ $STATUS == "2" ]]
+        working-directory: test/errors
+
+      - name: Exit Status on No lintable files
+        shell: bash
+        run: |
+          STATUS=$(${{ github.workspace }}/swiftlint.sh &>/dev/null; echo $?)
+          echo $STATUS
+          [[ $STATUS == "1" ]]
+        working-directory: test/no-lintable-files
+
+      - name: Exit Status on Warnings
+        shell: bash
+        run: |
+          STATUS=$(${{ github.workspace }}/swiftlint.sh &>/dev/null; echo $?)
+          echo $STATUS
+          [[ $STATUS == "0" ]]
+        working-directory: test/Warnings
+
+      - name: Exit Status on Warnings with `--strict`
+        shell: bash
+        run: |
+          STATUS=$(${{ github.workspace }}/swiftlint.sh --strict &>/dev/null; echo $?)
+          echo $STATUS
+          [[ $STATUS == "2" ]]
+        working-directory: test/Warnings
+
+      - name: Output on Errors
+        shell: bash
+        run: |
+          diff <(${{ github.workspace }}/swiftlint.sh|sort) expected.txt
+        working-directory: test/errors
+
+      - name: Output on Warnings
+        shell: bash
+        run: |
+          diff <(${{ github.workspace }}/swiftlint.sh|sort) expected.txt
+        working-directory: test/Warnings
